@@ -1,6 +1,3 @@
 ﻿namespace Library.Repository;
-public class Class1
-{
 
-}
-
+public class Class1 { }

@@ -3,7 +3,7 @@
 
 public class DotnetCommands
 {
-    public static int FormatCode() => ExecuteCommand("dotnet format ./src");
+    public static int FormatCode() => ExecuteCommand("dotnet csharpier ./src");
     public static int BuildCode() => ExecuteCommand("dotnet build ./src");
 
     // public static int FormatTests() => ExecuteCommand("dotnet format ./tests");
