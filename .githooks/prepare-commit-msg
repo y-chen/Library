@@ -1,0 +1,53 @@
+#!/usr/bin/env dotnet dotnet-script
+
+#load "logger.csx"
+#load "util.csx"
+#load "git-commands.csx"
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+Logger.LogInfo("Adding issue number to commit message");
+
+string commitMessageFilePath = Util.CommandLineArgument(Args, 0);
+string commitMessage = Util.GetCommitMessage(commitMessageFilePath);
+List<string> commitMessageParts = commitMessage.Split(":")
+                                    .Select(part => part.Trim())
+                                    .ToList();
+string branchName = GitCommands.CurrentBranch();
+int issueNumber = GetIssueNumber(branchName);
+
+if (branchName.StartsWith("feature") || branchName.StartsWith("chore"))
+{
+    string messageToBe = string.Format("{0}: [LIB-#{1}] {2}", commitMessageParts[0], issueNumber, commitMessageParts[1]);
+
+    PrepareCommitMessage(commitMessageFilePath, messageToBe);
+}
+
+if (branchName.StartsWith("bugfix"))
+{
+    string messageToBe = string.Format("fix: [LIB-#{0}] {1}", issueNumber, commitMessageParts[1]);
+
+    PrepareCommitMessage(commitMessageFilePath, messageToBe);
+}
+
+public static void PrepareCommitMessage(string messageFile, string message)
+{
+    string tempfile = Path.GetTempFileName();
+
+    using (var writer = new StreamWriter(tempfile))
+    {
+        writer.WriteLine(message);
+    }
+
+    File.Copy(tempfile, messageFile, true);
+}
+
+public static int GetIssueNumber(string branchName)
+{
+    string pattern = @"\b(?:feature|bugfix|chore)\/LIB-(\d+)-.+";
+    Match match = Regex.Match(branchName, pattern);
+
+    return Convert.ToInt32(match.Groups[1].ToString());
+}

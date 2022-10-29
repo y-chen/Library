@@ -1,0 +1,20 @@
+#!/usr/bin/env dotnet dotnet-script
+
+#load "logger.csx"
+#load "util.csx"
+#load "git-commands.csx"
+
+using System.Text.RegularExpressions;
+
+Logger.LogInfo("Validate commit message");
+
+string commitMessageFilePath = Util.CommandLineArgument(Args, 0);
+string message = Util.GetCommitMessage(commitMessageFilePath);
+const string regex = @"\b(feat|fix|chore)\b(\({1}\b(core)\b\){1})?(:){1}(\s){1}.+";
+var match = Regex.Match(message, regex);
+
+if (!match.Success) {
+    Logger.LogError("Message does not match commit format");
+
+    Environment.Exit(1);
+}
