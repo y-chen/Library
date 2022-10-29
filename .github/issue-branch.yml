@@ -1,0 +1,13 @@
+defaultBranch: "develop"
+gitSafeReplacementChar: "-"
+branchName: "LIB-${issue.number}-${issue.title,}"
+autoCloseIssue: true
+branches:
+  - label: feature
+    prefix: feature/
+  - label: bug
+    prefix: bugfix/
+  - label: chore
+    prefix: chore/
+  - label: question
+    skip: true
