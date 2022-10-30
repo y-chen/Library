@@ -1,6 +1,7 @@
-﻿using AutoMapper;
-using Library.Database;
+﻿using Library.Database;
 using Library.Repository.Core.Interfaces;
+using Library.Repository.Repositories;
+using Library.Repository.Repositories.Interfaces;
 
 namespace Library.Repository.Core
 {
@@ -8,9 +9,13 @@ namespace Library.Repository.Core
     {
         private readonly LibraryContext context;
 
-        public UnitOfWork(LibraryContext context, IMapper mapper)
+        public IEventStoreRepository EventStore { get; private set; }
+
+        public UnitOfWork(LibraryContext context)
         {
             this.context = context;
+
+            this.EventStore = new EventStoreRepository(context);
         }
 
         public async Task CompleteAsync()
