@@ -10,7 +10,11 @@ namespace Library.Startup
         public static void Configure(
             ConfigurationManager configuration,
             IServiceCollection services
-        ) { }
+        )
+        {
+            ConfigureInjector(services);
+            ConfigureDatabase(configuration, services);
+        }
 
         private static void ConfigureInjector(IServiceCollection services) { }
 
