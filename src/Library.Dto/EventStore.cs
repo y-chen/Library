@@ -10,7 +10,7 @@ namespace Library.Dto
 
         public string EventType { get; set; }
 
-        public byte[] Data { get; set; }
+        public object Data { get; set; }
 
         public long Revision { get; set; }
     }

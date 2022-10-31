@@ -8,7 +8,7 @@ namespace Library.Database
     {
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options) { }
 
-        protected override async void OnModelCreating(ModelBuilder modelBuilder) { }
+        protected override void OnModelCreating(ModelBuilder modelBuilder) { }
 
         public DbSet<EventStore> EventStore { get; set; }
     }
