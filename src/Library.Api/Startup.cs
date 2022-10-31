@@ -7,7 +7,6 @@ using Library.Service.Interfaces;
 using Library.Repository.Core;
 using Library.Repository.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 using Dtos = Library.Dto;
 using Entities = Library.Database.Entities;
@@ -54,29 +53,11 @@ namespace Library.Startup
             // Entity-To-DTO
 
             CreateMap<Entities.EventStore, Dtos.EventStore>()
-                .ForMember(
-                    dest => dest.Data,
-                    opt =>
-                        opt.MapFrom(
-                            src =>
-                                JsonSerializer.Deserialize<object>(
-                                    src.Data,
-                                    new JsonSerializerOptions()
-                                )
-                        )
-                )
                 .ForAllMembers((opts) => opts.Condition((src, dest, member) => member != null));
 
             // DTO-To-Entity
 
             CreateMap<Dtos.EventStore, Entities.EventStore>()
-                .ForMember(
-                    dest => dest.Data,
-                    opt =>
-                        opt.MapFrom(
-                            src => JsonSerializer.Serialize(src.Data, new JsonSerializerOptions())
-                        )
-                )
                 .IgnoreDtoAuditMembers();
         }
 

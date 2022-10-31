@@ -1,3 +1,5 @@
+using System.Dynamic;
+
 namespace Library.Dto
 {
     public class EventStore : DtoBase
@@ -8,7 +10,7 @@ namespace Library.Dto
 
         public string EventType { get; set; }
 
-        public object Data { get; set; }
+        public ExpandoObject Data { get; set; }
 
         public long Revision { get; set; }
 
@@ -16,7 +18,7 @@ namespace Library.Dto
             Guid streamId,
             string streamName,
             string eventType,
-            object data,
+            ExpandoObject data,
             long revision
         )
         {

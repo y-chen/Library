@@ -1,5 +1,7 @@
+using System.Dynamic;
 using Library.Database.Entities;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Library.Database
 {
@@ -7,7 +9,18 @@ namespace Library.Database
     {
         public LibraryContext(DbContextOptions<LibraryContext> options) : base(options) { }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) { }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder
+                .Entity<EventStore>()
+                .Property(e => e.Data)
+                .HasConversion(
+                    data => JsonConvert.SerializeObject(data),
+                    str => JsonConvert.DeserializeObject<ExpandoObject>(str)
+                );
+        }
 
         public DbSet<EventStore> EventStore { get; set; }
     }

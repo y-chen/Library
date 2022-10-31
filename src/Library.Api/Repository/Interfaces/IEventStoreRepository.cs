@@ -6,6 +6,10 @@ namespace Library.Repository.Interfaces
     {
         Task<EventStore> CreateEvent(EventStore eventStore);
 
-        Task<IEnumerable<EventStore>> ReadEvents(Guid? streamId, string? streamName);
+        Task<IEnumerable<EventStore>> ReadEvents(
+            Guid? streamId,
+            string? streamName,
+            bool latest = false
+        );
     }
 }

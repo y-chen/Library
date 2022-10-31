@@ -16,7 +16,7 @@ namespace Library.Controllers
         }
 
         [HttpPost]
-        public async Task<Book> CreateEvent([FromBody] Book book)
+        public async Task<Book> CreateBook([FromBody] Book book)
         {
             if (book == null)
             {
@@ -24,6 +24,12 @@ namespace Library.Controllers
             }
 
             return await _bookService.CreateBook(book);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<Book>> ReadBooks()
+        {
+            return await _bookService.ReadBooks();
         }
     }
 }

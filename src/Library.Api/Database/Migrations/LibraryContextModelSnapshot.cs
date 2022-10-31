@@ -32,7 +32,7 @@ namespace Library.Api.Database.Migrations
 
                     b.Property<string>("Data")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("json");
 
                     b.Property<string>("EventType")
                         .IsRequired()

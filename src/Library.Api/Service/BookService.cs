@@ -1,10 +1,11 @@
 using AutoMapper;
 using Library.Repository.Core.Interfaces;
 using Library.Service.Interfaces;
-using System.Text.Json;
+using Library.Dto;
+using Newtonsoft.Json;
+using System.Dynamic;
 
 using Entities = Library.Database.Entities;
-using Dtos = Library.Dto;
 
 namespace Library.Service
 {
@@ -19,11 +20,11 @@ namespace Library.Service
             _mapper = mapper;
         }
 
-        public async Task<Dtos.Book> CreateBook(Dtos.Book book)
+        public async Task<Book> CreateBook(Book book)
         {
             if (book == null)
             {
-                throw new ArgumentException("Book is null", nameof(Dtos.Book));
+                throw new ArgumentException("Book is null", nameof(Book));
             }
 
             Guid streamId = Guid.NewGuid();
@@ -32,19 +33,31 @@ namespace Library.Service
                 streamId,
                 "Book",
                 "Create",
-                JsonSerializer.Serialize(book, new JsonSerializerOptions()),
+                JsonConvert.DeserializeObject<ExpandoObject>(JsonConvert.SerializeObject(book)),
                 0
             );
 
             await _unitOfWork.EventStore.CreateEvent(store);
             await _unitOfWork.CompleteAsync();
 
-            Dtos.Book newBook = JsonSerializer.Deserialize<Dtos.Book>(
-                store.Data,
-                new JsonSerializerOptions()
+            Book newBook = JsonConvert.DeserializeObject<Book>(
+                JsonConvert.SerializeObject(store.Data)
             );
 
             return newBook;
+        }
+
+        public async Task<IEnumerable<Book>> ReadBooks()
+        {
+            IEnumerable<Entities.EventStore> bookEvents = await _unitOfWork.EventStore.ReadEvents(
+                streamId: null,
+                streamName: "Book",
+                latest: true
+            );
+
+            return bookEvents.Select(
+                x => JsonConvert.DeserializeObject<Book>(JsonConvert.SerializeObject(x.Data))
+            );
         }
     }
 }

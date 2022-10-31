@@ -1,8 +1,8 @@
-using System.Linq.Expressions;
 using Library.Database;
 using Library.Database.Entities;
 using Library.Repository.Core;
 using Library.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library.Repository
 {
@@ -17,22 +17,25 @@ namespace Library.Repository
             return eventStore;
         }
 
-        public async Task<IEnumerable<EventStore>> ReadEvents(Guid? streamId, string? streamName)
+        public async Task<IEnumerable<EventStore>> ReadEvents(
+            Guid? streamId,
+            string? streamName,
+            bool latest = false
+        )
         {
-            IList<Expression<Func<EventStore, bool>>> predicates =
-                new List<Expression<Func<EventStore, bool>>>();
+            IQueryable<EventStore> query = GetQuery();
+            query = query
+                .Where(x => streamId == null || x.StreamId == streamId)
+                .Where(x => streamName == null || x.StreamName == streamName);
 
-            if (streamId != null)
+            if (latest)
             {
-                predicates.Add(x => x.StreamId == streamId);
+                query = query
+                    .GroupBy(x => x.StreamId)
+                    .Select(x => x.OrderByDescending(e => e.Revision).FirstOrDefault());
             }
 
-            if (streamName != null)
-            {
-                predicates.Add(x => x.StreamName == streamName);
-            }
-
-            return await Read(predicates);
+            return await query.ToListAsync();
         }
     }
 }

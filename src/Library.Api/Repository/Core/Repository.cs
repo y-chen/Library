@@ -23,16 +23,9 @@ namespace Library.Repository.Core
             await dbSet.AddAsync(entity);
         }
 
-        public async Task<IEnumerable<T>> Read(IList<Expression<Func<T, bool>>> predicates)
+        public async Task<IEnumerable<T>> Read()
         {
-            IQueryable<T> query = dbSet.AsQueryable<T>();
-
-            foreach (var predicate in predicates)
-            {
-                query = query.Where(predicate);
-            }
-
-            return await query.ToListAsync();
+            return await dbSet.ToListAsync();
         }
 
         public async Task<T> ReadById(Guid id)
@@ -48,6 +41,11 @@ namespace Library.Repository.Core
         public void Delete(T entity)
         {
             dbSet.Remove(entity);
+        }
+
+        public IQueryable<T> GetQuery()
+        {
+            return dbSet.AsQueryable();
         }
     }
 }

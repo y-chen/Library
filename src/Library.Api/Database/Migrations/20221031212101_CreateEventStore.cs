@@ -17,7 +17,7 @@ namespace Library.Api.Database.Migrations
                     StreamId = table.Column<Guid>(type: "TEXT", nullable: false),
                     StreamName = table.Column<string>(type: "TEXT", nullable: false),
                     EventType = table.Column<string>(type: "TEXT", nullable: false),
-                    Data = table.Column<string>(type: "TEXT", nullable: false),
+                    Data = table.Column<string>(type: "json", nullable: false),
                     Revision = table.Column<long>(type: "INTEGER", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)

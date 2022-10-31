@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using Library.Database.Core;
+﻿using Library.Database.Core;
 
 namespace Library.Repository.Core.Interfaces
 {
@@ -7,12 +6,14 @@ namespace Library.Repository.Core.Interfaces
     {
         Task Create(T entity);
 
-        Task<IEnumerable<T>> Read(IList<Expression<Func<T, bool>>> predicates);
+        Task<IEnumerable<T>> Read();
 
         Task<T> ReadById(Guid id);
 
         void Update(T entity);
 
         void Delete(T entity);
+
+        IQueryable<T> GetQuery();
     }
 }
