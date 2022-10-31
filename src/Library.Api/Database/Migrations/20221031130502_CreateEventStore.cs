@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Library.Database.Migrations
+namespace Library.Api.Database.Migrations
 {
     public partial class CreateEventStore : Migration
     {
@@ -17,7 +17,7 @@ namespace Library.Database.Migrations
                     StreamId = table.Column<Guid>(type: "TEXT", nullable: false),
                     StreamName = table.Column<string>(type: "TEXT", nullable: false),
                     EventType = table.Column<string>(type: "TEXT", nullable: false),
-                    Data = table.Column<byte[]>(type: "BLOB", maxLength: 16, nullable: false),
+                    Data = table.Column<string>(type: "TEXT", nullable: false),
                     Revision = table.Column<long>(type: "INTEGER", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)

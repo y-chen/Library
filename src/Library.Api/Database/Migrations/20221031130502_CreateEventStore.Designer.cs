@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Library.Database.Migrations
+namespace Library.Api.Database.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20221031053930_ChangeDataColumType")]
-    partial class ChangeDataColumType
+    [Migration("20221031130502_CreateEventStore")]
+    partial class CreateEventStore
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

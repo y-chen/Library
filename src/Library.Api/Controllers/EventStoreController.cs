@@ -2,7 +2,7 @@ using Library.Dto;
 using Library.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Library.WebAPI.Controllers
+namespace Library.Controllers
 {
     [ApiController]
     [Route("/api/event-store")]

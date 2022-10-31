@@ -1,5 +1,3 @@
-using Library.Dto.Core;
-
 namespace Library.Dto
 {
     public class EventStore : DtoBase

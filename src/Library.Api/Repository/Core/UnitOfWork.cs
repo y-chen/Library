@@ -1,7 +1,7 @@
 ﻿using Library.Database;
 using Library.Repository.Core.Interfaces;
-using Library.Repository.Repositories;
-using Library.Repository.Repositories.Interfaces;
+using Library.Repository.Interfaces;
+using Library.Repository;
 
 namespace Library.Repository.Core
 {

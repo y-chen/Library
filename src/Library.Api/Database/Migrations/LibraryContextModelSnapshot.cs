@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Library.Database.Migrations
+namespace Library.Api.Database.Migrations
 {
     [DbContext(typeof(LibraryContext))]
     partial class LibraryContextModelSnapshot : ModelSnapshot
