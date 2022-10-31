@@ -350,3 +350,5 @@ MigrationBackup/
 .ionide/
 
 data
+.DS_Store
+.angular

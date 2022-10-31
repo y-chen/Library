@@ -17,8 +17,7 @@ namespace Library.Database.Entities
         public string EventType { get; set; }
 
         [Required]
-        [MaxLength(16)]
-        public byte[] Data { get; set; }
+        public string Data { get; set; }
 
         [Required]
         public long Revision { get; set; }
