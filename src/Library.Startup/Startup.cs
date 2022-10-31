@@ -1,7 +1,16 @@
-﻿using Library.Database;
+﻿using AutoMapper;
+using Library.Database;
+using Library.Database.Core;
+using Library.Dto.Core;
+using Library.Service;
+using Library.Service.Interfaces;
+using Library.Repository.Core;
+using Library.Repository.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Dtos = Library.Dto;
+using Entities = Library.Database.Entities;
 
 namespace Library.Startup
 {
@@ -16,7 +25,15 @@ namespace Library.Startup
             ConfigureDatabase(configuration, services);
         }
 
-        private static void ConfigureInjector(IServiceCollection services) { }
+        private static void ConfigureInjector(IServiceCollection services)
+        {
+            IMapper mapper = MappingProfile.GetMapper();
+
+            services
+                .AddScoped<IUnitOfWork, UnitOfWork>()
+                .AddScoped<IEventStoreService, EventStoreService>()
+                .AddSingleton(mapper);
+        }
 
         private static void ConfigureDatabase(
             ConfigurationManager configuration,
@@ -32,6 +49,46 @@ namespace Library.Startup
                         b => b.MigrationsAssembly("Library.Database")
                     )
             );
+        }
+    }
+
+    public class MappingProfile : Profile
+    {
+        public MappingProfile()
+        {
+            // Entity-To-DTO
+
+            CreateMap<Entities.EventStore, Dtos.EventStore>();
+
+            // DTO-To-Entity
+
+            CreateMap<Dtos.EventStore, Entities.EventStore>()
+                .IgnoreDtoAuditMembers();
+        }
+
+        public static IMapper GetMapper()
+        {
+            MapperConfiguration mapperConfig = new MapperConfiguration(config =>
+            {
+                config.AddProfile(new MappingProfile());
+            });
+
+            return mapperConfig.CreateMapper();
+        }
+    }
+
+    public static class AutoMapperExtensions
+    {
+        public static IMappingExpression<TSource, TDestination> IgnoreDtoAuditMembers<
+            TSource,
+            TDestination
+        >(this IMappingExpression<TSource, TDestination> expression)
+            where TSource : DtoBase
+            where TDestination : EntityBase
+        {
+            return expression
+                .ForMember(dest => dest.CreatedBy, opts => opts.Ignore())
+                .ForMember(dest => dest.CreatedAt, opts => opts.Ignore());
         }
     }
 }
