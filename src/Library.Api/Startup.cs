@@ -32,6 +32,7 @@ namespace Library.Startup
             services
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .AddScoped<IEventStoreService, EventStoreService>()
+                .AddScoped<IBookService, BookService>()
                 .AddSingleton(mapper);
         }
 

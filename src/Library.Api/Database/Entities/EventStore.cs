@@ -21,5 +21,20 @@ namespace Library.Database.Entities
 
         [Required]
         public long Revision { get; set; }
+
+        public EventStore(
+            Guid streamId,
+            string streamName,
+            string eventType,
+            string data,
+            long revision
+        )
+        {
+            StreamId = streamId;
+            StreamName = streamName;
+            EventType = eventType;
+            Data = data;
+            Revision = revision;
+        }
     }
 }

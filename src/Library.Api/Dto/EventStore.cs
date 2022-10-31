@@ -11,5 +11,20 @@ namespace Library.Dto
         public object Data { get; set; }
 
         public long Revision { get; set; }
+
+        public EventStore(
+            Guid streamId,
+            string streamName,
+            string eventType,
+            object data,
+            long revision
+        )
+        {
+            StreamId = streamId;
+            StreamName = streamName;
+            EventType = eventType;
+            Data = data;
+            Revision = revision;
+        }
     }
 }
