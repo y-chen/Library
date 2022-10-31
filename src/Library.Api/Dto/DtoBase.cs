@@ -1,4 +1,4 @@
-﻿namespace Library.Dto.Core
+﻿namespace Library.Dto
 {
     public abstract class DtoBase
     {

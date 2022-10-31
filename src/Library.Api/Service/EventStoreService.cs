@@ -2,6 +2,7 @@ using AutoMapper;
 using Library.Dto;
 using Library.Repository.Core.Interfaces;
 using Library.Service.Interfaces;
+
 using EventStoreDto = Library.Dto.EventStore;
 using EventStoreEntity = Library.Database.Entities.EventStore;
 

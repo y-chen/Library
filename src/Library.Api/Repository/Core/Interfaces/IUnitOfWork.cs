@@ -1,4 +1,4 @@
-﻿using Library.Repository.Repositories.Interfaces;
+﻿using Library.Repository.Interfaces;
 
 namespace Library.Repository.Core.Interfaces
 {

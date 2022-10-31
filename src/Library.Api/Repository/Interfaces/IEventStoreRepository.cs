@@ -1,6 +1,6 @@
-﻿using Library.Database.Entities;
+using Library.Database.Entities;
 
-namespace Library.Repository.Repositories.Interfaces
+namespace Library.Repository.Interfaces
 {
     public interface IEventStoreRepository
     {

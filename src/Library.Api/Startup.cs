@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using Library.Database;
 using Library.Database.Core;
-using Library.Dto.Core;
+using Library.Dto;
 using Library.Service;
 using Library.Service.Interfaces;
 using Library.Repository.Core;
 using Library.Repository.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 
 using Dtos = Library.Dto;
@@ -44,13 +42,7 @@ namespace Library.Startup
         {
             string connectionString = configuration["Database:ConnectionString"];
 
-            services.AddDbContext<LibraryContext>(
-                options =>
-                    options.UseSqlite(
-                        connectionString,
-                        b => b.MigrationsAssembly("Library.Database")
-                    )
-            );
+            services.AddDbContext<LibraryContext>(options => options.UseSqlite(connectionString));
         }
     }
 

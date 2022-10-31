@@ -1,4 +1,4 @@
-﻿namespace Library.Api;
+﻿namespace Library;
 
 public class WeatherForecast
 {

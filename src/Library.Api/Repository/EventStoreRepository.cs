@@ -1,10 +1,9 @@
-﻿using AutoMapper;
 using Library.Database;
 using Library.Database.Entities;
 using Library.Repository.Core;
-using Library.Repository.Repositories.Interfaces;
+using Library.Repository.Interfaces;
 
-namespace Library.Repository.Repositories
+namespace Library.Repository
 {
     public class EventStoreRepository : Repository<EventStore>, IEventStoreRepository
     {
