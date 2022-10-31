@@ -33,9 +33,12 @@ namespace Library.Service
             return _mapper.Map<EventStoreDto>(entity);
         }
 
-        public async Task<IEnumerable<EventStoreDto>> ReadEvents()
+        public async Task<IEnumerable<EventStoreDto>> ReadEvents(Guid? streamId, string? streamName)
         {
-            IEnumerable<EventStoreEntity> entities = await _unitOfWork.EventStore.ReadEvents();
+            IEnumerable<EventStoreEntity> entities = await _unitOfWork.EventStore.ReadEvents(
+                streamId,
+                streamName
+            );
 
             return entities.Select(entity => _mapper.Map<EventStoreDto>(entity));
         }

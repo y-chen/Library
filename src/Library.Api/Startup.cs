@@ -60,7 +60,7 @@ namespace Library.Startup
                             src =>
                                 JsonSerializer.Deserialize<object>(
                                     src.Data,
-                                    (JsonSerializerOptions)null
+                                    new JsonSerializerOptions()
                                 )
                         )
                 )
@@ -73,7 +73,7 @@ namespace Library.Startup
                     dest => dest.Data,
                     opt =>
                         opt.MapFrom(
-                            src => JsonSerializer.Serialize(src.Data, (JsonSerializerOptions)null)
+                            src => JsonSerializer.Serialize(src.Data, new JsonSerializerOptions())
                         )
                 )
                 .IgnoreDtoAuditMembers();

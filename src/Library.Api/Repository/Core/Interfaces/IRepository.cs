@@ -1,4 +1,5 @@
-﻿using Library.Database.Core;
+﻿using System.Linq.Expressions;
+using Library.Database.Core;
 
 namespace Library.Repository.Core.Interfaces
 {
@@ -6,7 +7,7 @@ namespace Library.Repository.Core.Interfaces
     {
         Task Create(T entity);
 
-        Task<IEnumerable<T>> Read();
+        Task<IEnumerable<T>> Read(IList<Expression<Func<T, bool>>> predicates);
 
         Task<T> ReadById(Guid id);
 

@@ -1,4 +1,5 @@
-﻿using Library.Database;
+﻿using System.Linq.Expressions;
+using Library.Database;
 using Library.Database.Core;
 using Library.Repository.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ namespace Library.Repository.Core
 
         protected Repository(LibraryContext context)
         {
-            this.dbSet = context.Set<T>();
+            dbSet = context.Set<T>();
         }
 
         public async Task Create(T entity)
@@ -19,27 +20,34 @@ namespace Library.Repository.Core
             entity.CreatedBy = "Anonymous";
             entity.CreatedAt = DateTime.UtcNow;
 
-            await this.dbSet.AddAsync(entity);
+            await dbSet.AddAsync(entity);
         }
 
-        public async Task<IEnumerable<T>> Read()
+        public async Task<IEnumerable<T>> Read(IList<Expression<Func<T, bool>>> predicates)
         {
-            return await this.dbSet.ToListAsync();
+            IQueryable<T> query = dbSet.AsQueryable<T>();
+
+            foreach (var predicate in predicates)
+            {
+                query = query.Where(predicate);
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<T> ReadById(Guid id)
         {
-            return await this.dbSet.SingleAsync(entity => entity.Id == id);
+            return await dbSet.SingleAsync(entity => entity.Id == id);
         }
 
         public void Update(T entity)
         {
-            this.dbSet.Update(entity);
+            dbSet.Update(entity);
         }
 
         public void Delete(T entity)
         {
-            this.dbSet.Remove(entity);
+            dbSet.Remove(entity);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Library.Database;
 using Library.Database.Entities;
 using Library.Repository.Core;
@@ -16,9 +17,22 @@ namespace Library.Repository
             return eventStore;
         }
 
-        public async Task<IEnumerable<EventStore>> ReadEvents()
+        public async Task<IEnumerable<EventStore>> ReadEvents(Guid? streamId, string? streamName)
         {
-            return await Read();
+            IList<Expression<Func<EventStore, bool>>> predicates =
+                new List<Expression<Func<EventStore, bool>>>();
+
+            if (streamId != null)
+            {
+                predicates.Add(x => x.StreamId == streamId);
+            }
+
+            if (streamName != null)
+            {
+                predicates.Add(x => x.StreamName == streamName);
+            }
+
+            return await Read(predicates);
         }
     }
 }
