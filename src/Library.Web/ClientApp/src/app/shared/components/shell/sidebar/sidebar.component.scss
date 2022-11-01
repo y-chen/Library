@@ -1,0 +1,69 @@
+@import 'mixins.scss';
+@import 'media.scss';
+@import 'constants.scss';
+
+:host {
+	mat-sidenav-container {
+		top: $toolbar-height !important;
+
+		> mat-sidenav {
+			@include flex-box(column);
+			padding: 10px;
+			background-color: #f1efee;
+
+			lib-nav-item {
+				margin: 5px;
+			}
+
+			.sidebar-toggle {
+				cursor: pointer;
+				position: absolute;
+				bottom: 15px;
+
+				@include media('>=0', '<=phone') {
+					display: none;
+				}
+
+				mat-icon {
+					@include mat-icon-size($sidebar-icon-size);
+				}
+			}
+		}
+
+		&.closed {
+			> mat-sidenav {
+				width: $sidebar-mobile-width !important;
+			}
+
+			> mat-sidenav-content {
+				padding: 10px;
+				margin-left: $sidebar-mobile-width !important;
+			}
+		}
+
+		&:not(.closed) {
+			> mat-sidenav {
+				width: $sidebar-desktop-width !important;
+
+				@include media('>=0', '<=phone') {
+					width: $sidebar-mobile-width !important;
+				}
+			}
+
+			> mat-sidenav-content {
+				padding: 10px;
+				margin-left: $sidebar-desktop-width !important;
+				max-height: calc(100% - 20px);
+				@include flex-box(column);
+
+				> .content {
+					flex: 1;
+				}
+
+				@include media('>=0', '<=phone') {
+					margin-left: $sidebar-mobile-width !important;
+				}
+			}
+		}
+	}
+}

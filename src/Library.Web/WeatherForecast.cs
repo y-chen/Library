@@ -1,4 +1,4 @@
-﻿namespace Library.Web;
+namespace Library.Web;
 
 public class WeatherForecast
 {

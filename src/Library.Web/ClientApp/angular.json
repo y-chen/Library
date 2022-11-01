@@ -2,6 +2,9 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
+  "cli": {
+    "analytics": false
+  },
   "projects": {
     "Library.Web": {
       "projectType": "application",
@@ -12,7 +15,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -26,9 +29,13 @@
             "assets": [
               "src/assets"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/assets/scss"]
+            },
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.css"
+              "src/styles.scss",
+              "src/assets/theme/material.scss"
             ],
             "scripts": []
           },
@@ -128,6 +135,5 @@
         }
       }
     }
-  },
-  "defaultProject": "Library.Web"
+  }
 }
