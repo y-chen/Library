@@ -11,5 +11,7 @@ namespace Library.Service.Interfaces
             string? streamName,
             bool latest = false
         );
+
+        Task<EventStore> ReadEvent(Guid streamId, string streamName);
     }
 }

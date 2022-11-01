@@ -47,5 +47,12 @@ namespace Library.Service
 
             return entities.Select(entity => _mapper.Map<EventStoreDto>(entity));
         }
+
+        public async Task<EventStoreDto> ReadEvent(Guid streamId, string streamName)
+        {
+            EventStoreEntity entity = await _unitOfWork.EventStore.ReadEvent(streamId, streamName);
+
+            return _mapper.Map<EventStoreDto>(entity);
+        }
     }
 }

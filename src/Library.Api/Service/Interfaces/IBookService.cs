@@ -7,5 +7,7 @@ namespace Library.Service.Interfaces
         Task<Book> CreateBook(Book book);
 
         Task<IEnumerable<Book>> ReadBooks();
+
+        Task<Book> ReadBookById(Guid id);
     }
 }

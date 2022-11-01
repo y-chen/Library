@@ -37,5 +37,14 @@ namespace Library.Repository
 
             return await query.ToListAsync();
         }
+
+        public async Task<EventStore> ReadEvent(Guid streamId, string streamName)
+        {
+            return await GetQuery()
+                .Where(x => x.StreamId == streamId)
+                .Where(x => x.StreamName == streamName)
+                .OrderByDescending(x => x.Revision)
+                .FirstOrDefaultAsync();
+        }
     }
 }

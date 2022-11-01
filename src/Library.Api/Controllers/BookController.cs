@@ -31,5 +31,11 @@ namespace Library.Controllers
         {
             return await _bookService.ReadBooks();
         }
+
+        [HttpGet("{id}")]
+        public async Task<Book> ReadBookById([FromRoute] Guid id)
+        {
+            return await _bookService.ReadBookById(id);
+        }
     }
 }

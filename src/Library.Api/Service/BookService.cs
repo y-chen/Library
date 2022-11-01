@@ -1,7 +1,7 @@
 using Library.Service.Interfaces;
 using Library.Dto;
-using Newtonsoft.Json;
 using System.Dynamic;
+using System.Text.Json;
 
 namespace Library.Service
 {
@@ -27,12 +27,12 @@ namespace Library.Service
                 streamId,
                 "Book",
                 "Create",
-                JsonConvert.DeserializeObject<ExpandoObject>(JsonConvert.SerializeObject(book)),
+                JsonSerializer.Deserialize<ExpandoObject>(JsonSerializer.Serialize(book)),
                 0
             );
             EventStore newStore = await _eventStoreService.CreateEvent(store);
 
-            return JsonConvert.DeserializeObject<Book>(JsonConvert.SerializeObject(newStore.Data));
+            return JsonSerializer.Deserialize<Book>(JsonSerializer.Serialize(newStore.Data));
         }
 
         public async Task<IEnumerable<Book>> ReadBooks()
@@ -44,8 +44,23 @@ namespace Library.Service
             );
 
             return bookEvents.Select(
-                x => JsonConvert.DeserializeObject<Book>(JsonConvert.SerializeObject(x.Data))
+                x => JsonSerializer.Deserialize<Book>(JsonSerializer.Serialize(x.Data))
             );
+        }
+
+        public async Task<Book> ReadBookById(Guid id)
+        {
+            EventStore bookEvent = await _eventStoreService.ReadEvent(
+                streamId: id,
+                streamName: "Book"
+            );
+
+            if (bookEvent == null)
+            {
+                throw new KeyNotFoundException($"Book with Id {id.ToString()} not found");
+            }
+
+            return JsonSerializer.Deserialize<Book>(JsonSerializer.Serialize(bookEvent.Data));
         }
     }
 }

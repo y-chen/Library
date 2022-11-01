@@ -1,7 +1,7 @@
 using System.Dynamic;
 using Library.Database.Entities;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Library.Database
 {
@@ -17,8 +17,9 @@ namespace Library.Database
                 .Entity<EventStore>()
                 .Property(e => e.Data)
                 .HasConversion(
-                    data => JsonConvert.SerializeObject(data),
-                    str => JsonConvert.DeserializeObject<ExpandoObject>(str)
+                    data => JsonSerializer.Serialize(data, (JsonSerializerOptions)null),
+                    str =>
+                        JsonSerializer.Deserialize<ExpandoObject>(str, (JsonSerializerOptions)null)
                 );
         }
 
