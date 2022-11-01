@@ -15,8 +15,8 @@ namespace Library.Service
 
         public EventStoreService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            this._unitOfWork = unitOfWork;
-            this._mapper = mapper;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<EventStoreDto> CreateEvent(EventStoreDto eventStore)
@@ -33,11 +33,26 @@ namespace Library.Service
             return _mapper.Map<EventStoreDto>(entity);
         }
 
-        public async Task<IEnumerable<EventStoreDto>> ReadEvents()
+        public async Task<IEnumerable<EventStoreDto>> ReadEvents(
+            Guid? streamId,
+            string? streamName,
+            bool latest = false
+        )
         {
-            IEnumerable<EventStoreEntity> entities = await _unitOfWork.EventStore.ReadEvents();
+            IEnumerable<EventStoreEntity> entities = await _unitOfWork.EventStore.ReadEvents(
+                streamId,
+                streamName,
+                latest
+            );
 
             return entities.Select(entity => _mapper.Map<EventStoreDto>(entity));
+        }
+
+        public async Task<EventStoreDto> ReadEvent(Guid streamId, string streamName)
+        {
+            EventStoreEntity entity = await _unitOfWork.EventStore.ReadEvent(streamId, streamName);
+
+            return _mapper.Map<EventStoreDto>(entity);
         }
     }
 }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Api.Database.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20221031130502_CreateEventStore")]
+    [Migration("20221031212101_CreateEventStore")]
     partial class CreateEventStore
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,7 @@ namespace Library.Api.Database.Migrations
 
                     b.Property<string>("Data")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("json");
 
                     b.Property<string>("EventType")
                         .IsRequired()

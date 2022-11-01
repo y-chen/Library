@@ -22,5 +22,6 @@
     <None Remove="Microsoft.EntityFrameworkCore" />
     <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
     <None Remove="AutoMapper" />
+    <None Remove="Newtonsoft.Json" />
   </ItemGroup>
 </Project>

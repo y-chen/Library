@@ -27,9 +27,12 @@ namespace Library.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<EventStore>> ReadEvent()
+        public async Task<IEnumerable<EventStore>> ReadEvent(
+            [FromQuery] Guid? streamId,
+            [FromQuery] string? streamName
+        )
         {
-            return await _eventStoreService.ReadEvents();
+            return await _eventStoreService.ReadEvents(streamId, streamName);
         }
     }
 }
