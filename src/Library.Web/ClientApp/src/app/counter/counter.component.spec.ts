@@ -32,4 +32,3 @@ describe('CounterComponent', () => {
     expect(countElement.textContent).toEqual('1');
   }));
 });
-

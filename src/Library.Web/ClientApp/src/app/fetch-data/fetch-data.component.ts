@@ -21,4 +21,3 @@ interface WeatherForecast {
   temperatureF: number;
   summary: string;
 }
-
