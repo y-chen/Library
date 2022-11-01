@@ -1,7 +1,7 @@
 {
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[csharp]": {
     "editor.formatOnSave": true,
@@ -34,5 +34,5 @@
   "importSorter.importStringConfiguration.tabSize": 2,
   "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 150,
   "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimit",
-  "importSorter.importStringConfiguration.trailingComma": "multiLine",
+  "importSorter.importStringConfiguration.trailingComma": "multiLine"
 }

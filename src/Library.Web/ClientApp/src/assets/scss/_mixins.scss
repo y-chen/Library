@@ -13,6 +13,12 @@
 	align-content: $align-content;
 }
 
+@mixin mat-icon-size($size: 16px) {
+	width: $size;
+	height: $size;
+	font-size: $size;
+}
+
 @mixin set-all-media($property, $default-value, $small-desktop-value, $tablet-value, $phone-value) {
 	#{$property}: $default-value;
 
