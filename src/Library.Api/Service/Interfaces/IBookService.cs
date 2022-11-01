@@ -9,5 +9,7 @@ namespace Library.Service.Interfaces
         Task<IEnumerable<Book>> ReadBooks();
 
         Task<Book> ReadBookById(Guid id);
+
+        Task<Book> UpdateBook(Guid id, Book book);
     }
 }

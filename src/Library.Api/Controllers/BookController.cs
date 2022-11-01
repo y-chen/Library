@@ -37,5 +37,11 @@ namespace Library.Controllers
         {
             return await _bookService.ReadBookById(id);
         }
+
+        [HttpPut("{id}")]
+        public async Task<Book> UpdateBook([FromRoute] Guid id, [FromBody] Book book)
+        {
+            return await _bookService.UpdateBook(id, book);
+        }
     }
 }

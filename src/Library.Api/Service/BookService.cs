@@ -16,10 +16,7 @@ namespace Library.Service
 
         public async Task<Book> CreateBook(Book book)
         {
-            if (book == null)
-            {
-                throw new ArgumentException("Book is null", nameof(Book));
-            }
+            ValidateBook(book);
 
             Guid streamId = Guid.NewGuid();
             book.Id = streamId;
@@ -61,6 +58,60 @@ namespace Library.Service
             }
 
             return JsonSerializer.Deserialize<Book>(JsonSerializer.Serialize(bookEvent.Data));
+        }
+
+        public async Task<Book> UpdateBook(Guid id, Book book)
+        {
+            ValidateBook(book);
+
+            EventStore bookEvent = await _eventStoreService.ReadEvent(
+                streamId: id,
+                streamName: "Book"
+            );
+
+            if (bookEvent == null)
+            {
+                throw new KeyNotFoundException($"Book with Id {id.ToString()} not found");
+            }
+
+            EventStore store = new EventStore(
+                id,
+                "Book",
+                "Update",
+                JsonSerializer.Deserialize<ExpandoObject>(JsonSerializer.Serialize(book)),
+                ++bookEvent.Revision
+            );
+            EventStore newStore = await _eventStoreService.CreateEvent(store);
+
+            return JsonSerializer.Deserialize<Book>(JsonSerializer.Serialize(newStore.Data));
+        }
+
+        private void ValidateBook(Book book)
+        {
+            if (book == null)
+            {
+                throw new ArgumentNullException("Book is null", nameof(Book));
+            }
+
+            if (book.Title == null)
+            {
+                throw new ArgumentNullException("Title is missing");
+            }
+
+            if (book.Description == null)
+            {
+                throw new ArgumentNullException("Description is missing");
+            }
+
+            if (book.PublishDate == null)
+            {
+                throw new ArgumentNullException("Publish date is missing");
+            }
+
+            if (book.Authors?.Length < 1)
+            {
+                throw new ArgumentNullException("At least one author is required");
+            }
         }
     }
 }
