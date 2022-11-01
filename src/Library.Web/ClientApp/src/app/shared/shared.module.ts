@@ -1,4 +1,3 @@
-
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -21,16 +20,10 @@ import { MaterialModule } from './material/material.module';
     ShellComponent,
     SidebarComponent,
     ToolbarComponent,
-    ValidationErrorsComponent
+    ValidationErrorsComponent,
   ],
   providers: [],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    MaterialModule,
-  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, MaterialModule],
   exports: [
     CommonModule,
     FormsModule,

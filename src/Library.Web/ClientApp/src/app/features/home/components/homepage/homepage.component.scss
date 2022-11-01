@@ -1,0 +1,10 @@
+@import 'mixins';
+
+:host {
+  .container {
+    width: 100%;
+    height: 100%;
+
+    @include flex-box(column, center, center, center);
+  }
+}
