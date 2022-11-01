@@ -1,23 +1,17 @@
-using AutoMapper;
-using Library.Repository.Core.Interfaces;
 using Library.Service.Interfaces;
 using Library.Dto;
 using Newtonsoft.Json;
 using System.Dynamic;
 
-using Entities = Library.Database.Entities;
-
 namespace Library.Service
 {
     public class BookService : IBookService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly IEventStoreService _eventStoreService;
 
-        public BookService(IUnitOfWork unitOfWork, IMapper mapper)
+        public BookService(IEventStoreService eventStoreService)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _eventStoreService = eventStoreService;
         }
 
         public async Task<Book> CreateBook(Book book)
@@ -29,27 +23,21 @@ namespace Library.Service
 
             Guid streamId = Guid.NewGuid();
             book.Id = streamId;
-            Entities.EventStore store = new Entities.EventStore(
+            EventStore store = new EventStore(
                 streamId,
                 "Book",
                 "Create",
                 JsonConvert.DeserializeObject<ExpandoObject>(JsonConvert.SerializeObject(book)),
                 0
             );
+            EventStore newStore = await _eventStoreService.CreateEvent(store);
 
-            await _unitOfWork.EventStore.CreateEvent(store);
-            await _unitOfWork.CompleteAsync();
-
-            Book newBook = JsonConvert.DeserializeObject<Book>(
-                JsonConvert.SerializeObject(store.Data)
-            );
-
-            return newBook;
+            return JsonConvert.DeserializeObject<Book>(JsonConvert.SerializeObject(newStore.Data));
         }
 
         public async Task<IEnumerable<Book>> ReadBooks()
         {
-            IEnumerable<Entities.EventStore> bookEvents = await _unitOfWork.EventStore.ReadEvents(
+            IEnumerable<EventStore> bookEvents = await _eventStoreService.ReadEvents(
                 streamId: null,
                 streamName: "Book",
                 latest: true
