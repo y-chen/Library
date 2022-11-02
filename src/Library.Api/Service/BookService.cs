@@ -1,95 +1,109 @@
-using Library.Service.Interfaces;
+using AutoMapper;
+using Library.Core;
 using Library.Dto;
+using Library.Repository.Core.Interfaces;
+using Library.Service.Interfaces;
 using System.Dynamic;
 using System.Text.Json;
-using Library.Core;
+
+using BookDto = Library.Dto.Book;
+using BookEntity = Library.Database.Entities.Book;
+using EventStoreDto = Library.Dto.EventStore;
+using EventStoreEntity = Library.Database.Entities.EventStore;
 
 namespace Library.Service
 {
     public class BookService : IBookService
     {
-        private readonly IEventStoreService _eventStoreService;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BookService(IEventStoreService eventStoreService)
+        public BookService(IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _eventStoreService = eventStoreService;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<Book> CreateBook(Book book)
+        public async Task<BookDto> CreateBookAsync(Book book)
         {
             ValidateBook(book);
 
-            Guid streamId = Guid.NewGuid();
-            book.Id = streamId;
-            EventStore store = new EventStore(
-                streamId,
-                "Book",
-                "Create",
-                JsonSerializer.Deserialize<ExpandoObject>(JsonSerializer.Serialize(book)),
-                0
+            BookEntity bookEntity = _mapper.Map<BookEntity>(book);
+            BookEntity newBookEntity = await this._unitOfWork.Book.CreateBookAsync(bookEntity);
+            EventStoreEntity store = new EventStoreEntity(
+                streamId: newBookEntity.Id,
+                streamName: "Book",
+                eventType: "Create",
+                data: JsonSerializer.Deserialize<ExpandoObject>(
+                    JsonSerializer.Serialize(newBookEntity)
+                ),
+                revision: 0
             );
-            EventStore newStore = await _eventStoreService.CreateEvent(store);
+            await _unitOfWork.EventStore.CreateEvent(store);
+            await _unitOfWork.CompleteAsync();
 
-            return JsonSerializer.Deserialize<Book>(JsonSerializer.Serialize(newStore.Data));
+            return _mapper.Map<BookDto>(newBookEntity);
         }
 
-        public async Task<Result<Book>> ReadBooks(int skip = 0, int take = 0)
+        public async Task<Result<Book>> ReadBooksAsync(
+            string? searchTerm,
+            string? orderBy,
+            string orderDirection = "ASC",
+            int skip = 0,
+            int take = 0
+        )
         {
-            var result = await _eventStoreService.ReadEvents(
-                streamId: null,
-                streamName: "Book",
-                latest: true,
+            var (books, count) = await _unitOfWork.Book.ReadBooksAsync(
+                searchTerm,
+                orderBy,
+                orderDirection,
                 skip,
                 take
             );
 
-            return new Result<Book>(
-                result.Items.Select(
-                    x => JsonSerializer.Deserialize<Book>(JsonSerializer.Serialize(x.Data))
-                ),
-                result.Count
-            );
+            return new Result<Book>(books.Select(book => _mapper.Map<BookDto>(book)), count);
         }
 
-        public async Task<Book> ReadBookById(Guid id)
+        public async Task<Book> ReadBookByIdAsync(Guid id)
         {
-            EventStore bookEvent = await _eventStoreService.ReadEvent(
-                streamId: id,
-                streamName: "Book"
-            );
+            BookEntity bookEntity = await _unitOfWork.Book.ReadBookByIdAsync(id);
 
-            if (bookEvent == null)
+            if (bookEntity == null)
             {
                 throw new KeyNotFoundException($"Book with Id {id.ToString()} not found");
             }
 
-            return JsonSerializer.Deserialize<Book>(JsonSerializer.Serialize(bookEvent.Data));
+            return _mapper.Map<BookDto>(bookEntity);
         }
 
-        public async Task<Book> UpdateBook(Guid id, Book book)
+        public async Task<Book> UpdateBookAsync(Guid id, BookDto book)
         {
             ValidateBook(book);
 
-            EventStore bookEvent = await _eventStoreService.ReadEvent(
-                streamId: id,
-                streamName: "Book"
-            );
+            BookEntity bookEntity = await _unitOfWork.Book.ReadBookByIdAsync(id);
 
-            if (bookEvent == null)
+            if (bookEntity == null)
             {
                 throw new KeyNotFoundException($"Book with Id {id.ToString()} not found");
             }
 
-            EventStore store = new EventStore(
-                id,
-                "Book",
-                "Update",
-                JsonSerializer.Deserialize<ExpandoObject>(JsonSerializer.Serialize(book)),
-                ++bookEvent.Revision
+            bookEntity = _mapper.Map<BookEntity>(book);
+            BookEntity updatedBook = _unitOfWork.Book.UpdateBookAsync(id, bookEntity);
+            EventStoreEntity latestEvent = await _unitOfWork.EventStore.ReadLatestEvent(
+                bookEntity.Id,
+                "Book"
             );
-            EventStore newStore = await _eventStoreService.CreateEvent(store);
+            EventStoreEntity newEvent = new EventStoreEntity(
+                streamId: latestEvent.StreamId,
+                streamName: latestEvent.StreamName,
+                "Update",
+                JsonSerializer.Deserialize<ExpandoObject>(JsonSerializer.Serialize(bookEntity)),
+                ++latestEvent.Revision
+            );
+            await _unitOfWork.EventStore.CreateEvent(newEvent);
+            await _unitOfWork.CompleteAsync();
 
-            return JsonSerializer.Deserialize<Book>(JsonSerializer.Serialize(newStore.Data));
+            return _mapper.Map<BookDto>(updatedBook);
         }
 
         private void ValidateBook(Book book)
@@ -114,10 +128,13 @@ namespace Library.Service
                 throw new ArgumentNullException("Publish date is missing");
             }
 
-            // if (book.Authors?.Length < 1)
-            // {
-            //     throw new ArgumentNullException("At least one author is required");
-            // }
+            if (
+                JsonSerializer.Deserialize<string[]>(JsonSerializer.Serialize(book.Authors)).Length
+                < 1
+            )
+            {
+                throw new ArgumentNullException("At least one author is required");
+            }
         }
     }
 }

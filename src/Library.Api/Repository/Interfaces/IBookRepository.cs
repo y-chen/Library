@@ -4,7 +4,7 @@ namespace Library.Repository.Interfaces
 {
     public interface IBookRepository
     {
-        Task<Book> CreateBookAsync(Book eventStore);
+        Task<Book> CreateBookAsync(Book book);
 
         Task<(IEnumerable<Book>, int)> ReadBooksAsync(
             string? searchTerm,
@@ -14,6 +14,8 @@ namespace Library.Repository.Interfaces
             int take = 0
         );
 
-        Task<Book> ReadBookAsync(Guid id);
+        Task<Book> ReadBookByIdAsync(Guid id);
+
+        Book UpdateBookAsync(Guid id, Book book);
     }
 }

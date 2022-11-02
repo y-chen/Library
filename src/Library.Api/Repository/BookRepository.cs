@@ -76,9 +76,16 @@ namespace Library.Repository
             return (items, count);
         }
 
-        public async Task<Book> ReadBookAsync(Guid id)
+        public async Task<Book> ReadBookByIdAsync(Guid id)
         {
             return await GetQuery().Where(book => book.Id == id).FirstOrDefaultAsync();
+        }
+
+        public Book UpdateBookAsync(Guid id, Book book)
+        {
+            Update(book);
+
+            return book;
         }
     }
 }

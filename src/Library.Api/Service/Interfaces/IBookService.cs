@@ -5,12 +5,18 @@ namespace Library.Service.Interfaces
 {
     public interface IBookService
     {
-        Task<Book> CreateBook(Book book);
+        Task<Book> CreateBookAsync(Book book);
 
-        Task<Result<Book>> ReadBooks(int skip, int take);
+        Task<Result<Book>> ReadBooksAsync(
+            string? searchTerm,
+            string? orderBy,
+            string orderDirection = "ASC",
+            int skip = 0,
+            int take = 0
+        );
 
-        Task<Book> ReadBookById(Guid id);
+        Task<Book> ReadBookByIdAsync(Guid id);
 
-        Task<Book> UpdateBook(Guid id, Book book);
+        Task<Book> UpdateBookAsync(Guid id, Book book);
     }
 }
