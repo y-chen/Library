@@ -2,6 +2,7 @@ using Library.Service.Interfaces;
 using Library.Dto;
 using System.Dynamic;
 using System.Text.Json;
+using Library.Core;
 
 namespace Library.Service
 {
@@ -32,16 +33,21 @@ namespace Library.Service
             return JsonSerializer.Deserialize<Book>(JsonSerializer.Serialize(newStore.Data));
         }
 
-        public async Task<IEnumerable<Book>> ReadBooks()
+        public async Task<Result<Book>> ReadBooks(int skip = 0, int take = 0)
         {
-            IEnumerable<EventStore> bookEvents = await _eventStoreService.ReadEvents(
+            var result = await _eventStoreService.ReadEvents(
                 streamId: null,
                 streamName: "Book",
-                latest: true
+                latest: true,
+                skip,
+                take
             );
 
-            return bookEvents.Select(
-                x => JsonSerializer.Deserialize<Book>(JsonSerializer.Serialize(x.Data))
+            return new Result<Book>(
+                result.Items.Select(
+                    x => JsonSerializer.Deserialize<Book>(JsonSerializer.Serialize(x.Data))
+                ),
+                result.Count
             );
         }
 

@@ -1,4 +1,5 @@
 using AutoMapper;
+using Library.Core;
 using Library.Dto;
 using Library.Repository.Core.Interfaces;
 using Library.Service.Interfaces;
@@ -33,19 +34,26 @@ namespace Library.Service
             return _mapper.Map<EventStoreDto>(entity);
         }
 
-        public async Task<IEnumerable<EventStoreDto>> ReadEvents(
+        public async Task<Result<EventStoreDto>> ReadEvents(
             Guid? streamId,
             string? streamName,
-            bool latest = false
+            bool latest = false,
+            int skip = 0,
+            int take = 0
         )
         {
-            IEnumerable<EventStoreEntity> entities = await _unitOfWork.EventStore.ReadEvents(
+            var (items, count) = await _unitOfWork.EventStore.ReadEvents(
                 streamId,
                 streamName,
-                latest
+                latest,
+                skip,
+                take
             );
 
-            return entities.Select(entity => _mapper.Map<EventStoreDto>(entity));
+            return new Result<EventStoreDto>(
+                items.Select(entity => _mapper.Map<EventStoreDto>(entity)),
+                count
+            );
         }
 
         public async Task<EventStoreDto> ReadEvent(Guid streamId, string streamName)

@@ -1,36 +1,38 @@
 @import 'media';
 
 @mixin flex-box(
-	$flex-direction: row,
-	$justify-content: unset,
-	$align-items: unset,
-	$align-content: unset
+  $flex-direction: row,
+  $justify-content: unset,
+  $align-items: unset,
+  $align-content: unset,
+  $gap: unset
 ) {
-	display: flex;
-	flex-direction: $flex-direction;
-	justify-content: $justify-content;
-	align-items: $align-items;
-	align-content: $align-content;
+  display: flex;
+  flex-direction: $flex-direction;
+  justify-content: $justify-content;
+  align-items: $align-items;
+  align-content: $align-content;
+  gap: $gap;
 }
 
 @mixin mat-icon-size($size: 16px) {
-	width: $size;
-	height: $size;
-	font-size: $size;
+  width: $size;
+  height: $size;
+  font-size: $size;
 }
 
 @mixin set-all-media($property, $default-value, $small-desktop-value, $tablet-value, $phone-value) {
-	#{$property}: $default-value;
+  #{$property}: $default-value;
 
-	@include media('>tablet', '<=smalldesktop') {
-		#{$property}: $small-desktop-value;
-	}
+  @include media('>tablet', '<=smalldesktop') {
+    #{$property}: $small-desktop-value;
+  }
 
-	@include media('>phone', '<=tablet') {
-		#{$property}: $tablet-value;
-	}
+  @include media('>phone', '<=tablet') {
+    #{$property}: $tablet-value;
+  }
 
-	@include media('>=0', '<=phone') {
-		#{$property}: $phone-value;
-	}
+  @include media('>=0', '<=phone') {
+    #{$property}: $phone-value;
+  }
 }

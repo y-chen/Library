@@ -1,3 +1,4 @@
+using Library.Core;
 using Library.Dto;
 using Library.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -27,9 +28,12 @@ namespace Library.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Book>> ReadBooks()
+        public async Task<Result<Book>> ReadBooks(
+            [FromQuery] int skip = 0,
+            [FromQuery] int take = 0
+        )
         {
-            return await _bookService.ReadBooks();
+            return await _bookService.ReadBooks(skip, take);
         }
 
         [HttpGet("{id}")]
