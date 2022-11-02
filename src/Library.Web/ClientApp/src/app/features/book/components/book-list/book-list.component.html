@@ -5,6 +5,11 @@
     Add new book
   </button>
 
+  <mat-form-field appearance="fill">
+    <mat-label>Search</mat-label>
+    <input matInput [ngModel]="searchTerm$ | async" (ngModelChange)="searchTerm$.next($event)" />
+  </mat-form-field>
+
   <div class="table-container">
     <table mat-table [dataSource]="result.items" class="mat-elevation-z8">
       <ng-container matColumnDef="title">

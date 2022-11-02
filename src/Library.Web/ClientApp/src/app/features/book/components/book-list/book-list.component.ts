@@ -1,3 +1,5 @@
+import { BehaviorSubject, debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
@@ -17,11 +19,16 @@ export class BookListComponent implements OnInit {
   pageSizeOptions: number[] = [5, 10, 25, 100];
   result!: Result<Book>;
   displayedColumns: string[] = ['title', 'description', 'publishDate', 'author', 'actions'];
+  searchTerm$ = new BehaviorSubject<string>('');
 
   constructor(private readonly bookService: BookService, private readonly route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.result = this.route.snapshot.data['result'];
+
+    this.searchTerm$.pipe(debounceTime(500), distinctUntilChanged()).subscribe(async (value) => {
+      this.result = await this.bookService.readBooks({ searchTerm: value });
+    });
   }
 
   async onPageChange({ previousPageIndex, pageIndex, pageSize: take }: PageEvent) {

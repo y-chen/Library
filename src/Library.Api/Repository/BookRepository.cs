@@ -26,9 +26,17 @@ namespace Library.Repository
         )
         {
             IQueryable<Book> query = GetQuery();
-            query = query
-                .Where(book => searchTerm == null || book.Title.Contains(searchTerm))
-                .Where(book => searchTerm == null || book.Description.Contains(searchTerm));
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower();
+                query = query.Where(
+                    book =>
+                        book.Title.ToLower().Contains(searchTerm)
+                        || book.Description.ToLower().Contains(searchTerm)
+                        || book.Author.ToLower().Contains(searchTerm)
+                );
+            }
 
             if (orderBy != null)
             {
