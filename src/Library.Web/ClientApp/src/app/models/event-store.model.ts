@@ -3,13 +3,13 @@ import { ParamBase } from './param.model';
 export interface EventStore {
   id: string;
   streamId: string;
-  stringName: string;
+  streamName: string;
   eventType: string;
-  data: unknown;
+  data: any;
   revision: number;
 }
 
 export interface EventStoreParam extends ParamBase {
   streamId?: string;
-  stringName?: string;
+  streamName?: string;
 }
