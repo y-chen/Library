@@ -10,7 +10,7 @@ namespace Library.Service.Interfaces
         Task<Result<Book>> ReadBooksAsync(
             string? searchTerm,
             string? orderBy,
-            string orderDirection = "ASC",
+            string? orderDirection = "ASC",
             int skip = 0,
             int take = 0
         );

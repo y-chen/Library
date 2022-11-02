@@ -16,6 +16,7 @@ namespace Library.Repository.Core
         {
             this.context = context;
 
+            this.Book = new BookRepository(context);
             this.EventStore = new EventStoreRepository(context);
         }
 

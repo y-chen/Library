@@ -8,7 +8,6 @@ using System.Text.Json;
 
 using BookDto = Library.Dto.Book;
 using BookEntity = Library.Database.Entities.Book;
-using EventStoreDto = Library.Dto.EventStore;
 using EventStoreEntity = Library.Database.Entities.EventStore;
 
 namespace Library.Service
@@ -45,10 +44,10 @@ namespace Library.Service
             return _mapper.Map<BookDto>(newBookEntity);
         }
 
-        public async Task<Result<Book>> ReadBooksAsync(
+        public async Task<Result<BookDto>> ReadBooksAsync(
             string? searchTerm,
             string? orderBy,
-            string orderDirection = "ASC",
+            string? orderDirection = "ASC",
             int skip = 0,
             int take = 0
         )
@@ -61,22 +60,22 @@ namespace Library.Service
                 take
             );
 
-            return new Result<Book>(books.Select(book => _mapper.Map<BookDto>(book)), count);
+            return new Result<BookDto>(books.Select(book => _mapper.Map<BookDto>(book)), count);
         }
 
-        public async Task<Book> ReadBookByIdAsync(Guid id)
+        public async Task<BookDto> ReadBookByIdAsync(Guid id)
         {
             BookEntity bookEntity = await _unitOfWork.Book.ReadBookByIdAsync(id);
 
             if (bookEntity == null)
             {
-                throw new KeyNotFoundException($"Book with Id {id.ToString()} not found");
+                throw new KeyNotFoundException($"Book with Id {id} not found");
             }
 
             return _mapper.Map<BookDto>(bookEntity);
         }
 
-        public async Task<Book> UpdateBookAsync(Guid id, BookDto book)
+        public async Task<BookDto> UpdateBookAsync(Guid id, BookDto book)
         {
             ValidateBook(book);
 
@@ -106,7 +105,7 @@ namespace Library.Service
             return _mapper.Map<BookDto>(updatedBook);
         }
 
-        private void ValidateBook(Book book)
+        private void ValidateBook(BookDto book)
         {
             if (book == null)
             {

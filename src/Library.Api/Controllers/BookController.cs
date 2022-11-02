@@ -31,7 +31,7 @@ namespace Library.Controllers
         public async Task<Result<Book>> ReadBooks(
             [FromQuery] string? searchTerm,
             [FromQuery] string? orderBy,
-            [FromQuery] string orderDirection = "ASC",
+            [FromQuery] string? orderDirection = "ASC",
             [FromQuery] int skip = 0,
             [FromQuery] int take = 0
         )

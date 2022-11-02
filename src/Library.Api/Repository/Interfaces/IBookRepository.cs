@@ -9,7 +9,7 @@ namespace Library.Repository.Interfaces
         Task<(IEnumerable<Book>, int)> ReadBooksAsync(
             string? searchTerm,
             string? orderBy,
-            string orderDirection = "ASC",
+            string? orderDirection = "ASC",
             int skip = 0,
             int take = 0
         );
