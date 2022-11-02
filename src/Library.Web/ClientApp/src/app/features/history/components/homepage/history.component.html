@@ -24,3 +24,7 @@
 
 <mat-paginator [length]="result.count" [pageSize]="2" (page)="onPageChange($event)">
 </mat-paginator>
+
+<button type="button" mat-raised-button color="accent" [routerLink]="['/app', 'books']">
+  Back
+</button>
