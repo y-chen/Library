@@ -1,7 +1,9 @@
 <div class="container">
   <h1>Book List</h1>
 
-  <button type="button" mat-raised-button color="accent">Add new book</button>
+  <button type="button" mat-raised-button color="accent" [routerLink]="['/app', 'books', 'new']">
+    Add new book
+  </button>
 
   <div class="table-container">
     <table mat-table [dataSource]="result.items" class="mat-elevation-z8">

@@ -1,0 +1,67 @@
+import { isUUID } from 'class-validator';
+
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { BookService } from '../../../../core/services/book.service';
+import { Book } from '../../../../models/book.model';
+
+@Component({
+  selector: 'lib-book-editor',
+  templateUrl: './book-editor.component.html',
+  styleUrls: ['./book-editor.component.scss'],
+})
+export class BookEditorComponent implements OnInit {
+  book?: Book;
+  form!: FormGroup;
+
+  constructor(
+    private readonly bookService: BookService,
+    private readonly formBuilder: FormBuilder,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+  ) {}
+
+  ngOnInit(): void {
+    this.book = this.route.snapshot.data['book'];
+    this.form = this.createForm(this.book);
+  }
+
+  addAuthor(): void {
+    this.form
+      .getFormArray('authors')
+      .push(this.formBuilder.control(null, { validators: [Validators.required] }));
+  }
+
+  deleteAuthor(index: number): void {
+    this.form.getFormArray('authors').removeAt(index);
+  }
+
+  async submit(): Promise<void> {
+    const values = this.form.value;
+
+    isUUID(values.id)
+      ? await this.bookService.updateBook(values.id, values)
+      : await this.bookService.createBook(values);
+
+    this.router.navigate(['/app', 'books']);
+  }
+
+  private createForm(book?: Book): FormGroup {
+    const { id, title, description, publishDate, authors } = book ?? {};
+
+    const authorsFormGroups =
+      authors?.map((author) =>
+        this.formBuilder.control(author, { validators: [Validators.required] }),
+      ) ?? [];
+
+    return this.formBuilder.group({
+      id: [id ?? undefined, []],
+      title: [title, [Validators.required]],
+      description: [description, [Validators.required]],
+      publishDate: [publishDate, [Validators.required]],
+      authors: this.formBuilder.array(authorsFormGroups),
+    });
+  }
+}
