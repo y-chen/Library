@@ -50,7 +50,22 @@
             Edit
           </button>
 
-          <button type="button" mat-raised-button color="accent">History</button>
+          <button
+            type="button"
+            mat-raised-button
+            color="accent"
+            [routerLink]="['/app', 'history']"
+            [queryParams]="{
+              streamId: book.id,
+              streamName: 'Book',
+              orderBy: 'revision',
+              orderDirection: 'ASC',
+              skip: 0,
+              take: 2
+            }"
+          >
+            History
+          </button>
         </td>
       </ng-container>
 
