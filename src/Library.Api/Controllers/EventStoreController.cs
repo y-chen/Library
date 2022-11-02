@@ -28,12 +28,23 @@ namespace Library.Controllers
         }
 
         [HttpGet]
-        public async Task<Result<EventStore>> ReadEvent(
+        public async Task<Result<EventStore>> ReadEvents(
             [FromQuery] Guid? streamId,
-            [FromQuery] string? streamName
+            [FromQuery] string? streamName,
+            [FromQuery] string? orderBy,
+            [FromQuery] string? orderDirection,
+            [FromQuery] int skip = 0,
+            [FromQuery] int take = 0
         )
         {
-            return await _eventStoreService.ReadEvents(streamId, streamName);
+            return await _eventStoreService.ReadEvents(
+                streamId,
+                streamName,
+                orderBy,
+                orderDirection,
+                skip,
+                take
+            );
         }
     }
 }

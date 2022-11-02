@@ -1,0 +1,23 @@
+@import 'mixins';
+
+:host {
+  div.container {
+    @include flex-box(column, start, start, start, 5px);
+
+    div.table-container {
+      width: 100%;
+
+      table {
+        width: 100%;
+
+        th {
+          width: 33%;
+        }
+
+        td.different {
+          background-color: var(--accent-color);
+        }
+      }
+    }
+  }
+}

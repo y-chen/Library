@@ -20,7 +20,8 @@ namespace Library.Repository
         public async Task<(IEnumerable<EventStore>, int)> ReadEvents(
             Guid? streamId,
             string? streamName,
-            bool latest = false,
+            string? orderBy = "revision",
+            string? orderDirection = "ASC",
             int skip = 0,
             int take = 0
         )
@@ -30,11 +31,20 @@ namespace Library.Repository
                 .Where(x => streamId == null || x.StreamId == streamId)
                 .Where(x => streamName == null || x.StreamName == streamName);
 
-            if (latest)
+            if (orderBy != null)
             {
-                query = query
-                    .GroupBy(x => x.StreamId)
-                    .Select(x => x.OrderByDescending(e => e.Revision).FirstOrDefault());
+                switch (orderBy)
+                {
+                    case "revision":
+                        query =
+                            orderDirection == "ASC"
+                                ? query.OrderBy(store => store.Revision)
+                                : query.OrderByDescending(store => store.Revision);
+                        break;
+
+                    default:
+                        throw new InvalidOperationException("Invalid sorting operation");
+                }
             }
 
             // Getting an error when calling Count()
