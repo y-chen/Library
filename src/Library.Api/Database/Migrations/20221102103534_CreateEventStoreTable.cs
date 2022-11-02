@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Library.Api.Database.Migrations
 {
-    public partial class CreateEventStore : Migration
+    public partial class CreateEventStoreTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,10 +17,12 @@ namespace Library.Api.Database.Migrations
                     StreamId = table.Column<Guid>(type: "TEXT", nullable: false),
                     StreamName = table.Column<string>(type: "TEXT", nullable: false),
                     EventType = table.Column<string>(type: "TEXT", nullable: false),
-                    Data = table.Column<string>(type: "json", nullable: false),
+                    Data = table.Column<string>(type: "JSON", nullable: false),
                     Revision = table.Column<long>(type: "INTEGER", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "TEXT", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

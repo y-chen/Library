@@ -52,13 +52,16 @@ namespace Library.Startup
         {
             // Entity-To-DTO
 
+            CreateMap<Entities.Book, Dtos.Book>()
+                .ForAllMembers((opts) => opts.Condition((src, dest, member) => member != null));
             CreateMap<Entities.EventStore, Dtos.EventStore>()
                 .ForAllMembers((opts) => opts.Condition((src, dest, member) => member != null));
 
             // DTO-To-Entity
 
-            CreateMap<Dtos.EventStore, Entities.EventStore>()
+            CreateMap<Dtos.Book, Entities.Book>()
                 .IgnoreDtoAuditMembers();
+            CreateMap<Dtos.EventStore, Entities.EventStore>().IgnoreDtoAuditMembers();
         }
 
         public static IMapper GetMapper()

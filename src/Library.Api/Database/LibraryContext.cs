@@ -14,6 +14,15 @@ namespace Library.Database
             base.OnModelCreating(modelBuilder);
 
             modelBuilder
+                .Entity<Book>()
+                .Property(e => e.Authors)
+                .HasConversion(
+                    authors => JsonSerializer.Serialize(authors, (JsonSerializerOptions)null),
+                    str =>
+                        JsonSerializer.Deserialize<ExpandoObject>(str, (JsonSerializerOptions)null)
+                );
+
+            modelBuilder
                 .Entity<EventStore>()
                 .Property(e => e.Data)
                 .HasConversion(
@@ -23,6 +32,7 @@ namespace Library.Database
                 );
         }
 
+        public DbSet<Book> Book { get; set; }
         public DbSet<EventStore> EventStore { get; set; }
     }
 }

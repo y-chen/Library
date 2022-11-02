@@ -11,13 +11,52 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Api.Database.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20221031212101_CreateEventStore")]
-    partial class CreateEventStore
+    [Migration("20221102103659_CreateBookTable")]
+    partial class CreateBookTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
+
+            modelBuilder.Entity("Library.Database.Entities.Book", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Authors")
+                        .IsRequired()
+                        .HasColumnType("JSON");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("PublishDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Book");
+                });
 
             modelBuilder.Entity("Library.Database.Entities.EventStore", b =>
                 {
@@ -34,7 +73,7 @@ namespace Library.Api.Database.Migrations
 
                     b.Property<string>("Data")
                         .IsRequired()
-                        .HasColumnType("json");
+                        .HasColumnType("JSON");
 
                     b.Property<string>("EventType")
                         .IsRequired()
@@ -48,6 +87,12 @@ namespace Library.Api.Database.Migrations
 
                     b.Property<string>("StreamName")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

@@ -35,6 +35,9 @@ namespace Library.Repository.Core
 
         public void Update(T entity)
         {
+            entity.UpdatedBy = "Anonymous";
+            entity.UpdatedAt = DateTime.UtcNow;
+
             dbSet.Update(entity);
         }
 

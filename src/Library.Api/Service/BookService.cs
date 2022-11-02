@@ -114,10 +114,10 @@ namespace Library.Service
                 throw new ArgumentNullException("Publish date is missing");
             }
 
-            if (book.Authors?.Length < 1)
-            {
-                throw new ArgumentNullException("At least one author is required");
-            }
+            // if (book.Authors?.Length < 1)
+            // {
+            //     throw new ArgumentNullException("At least one author is required");
+            // }
         }
     }
 }

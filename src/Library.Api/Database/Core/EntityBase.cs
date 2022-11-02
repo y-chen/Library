@@ -14,5 +14,9 @@ namespace Library.Database.Core
 
         [Required]
         public DateTime CreatedAt { get; set; }
+
+        public string? UpdatedBy { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
     }
 }
