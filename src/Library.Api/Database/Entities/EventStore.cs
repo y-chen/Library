@@ -6,14 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Library.Database.Entities
 {
-    [Index(nameof(StreamId), nameof(Revision), IsUnique = true)]
     public class EventStore : EntityBase
     {
         [Required]
-        public Guid StreamId { get; set; }
+        public string StreamName { get; set; }
 
         [Required]
-        public string StreamName { get; set; }
+        public Guid StreamId { get; set; }
 
         [Required]
         public string EventType { get; set; }
@@ -24,6 +23,8 @@ namespace Library.Database.Entities
 
         [Required]
         public long Revision { get; set; }
+
+        public EventStore() { }
 
         public EventStore(
             Guid streamId,

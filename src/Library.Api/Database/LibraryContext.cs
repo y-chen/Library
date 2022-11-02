@@ -23,6 +23,7 @@ namespace Library.Database
                 );
         }
 
+        public DbSet<Book> Book { get; set; }
         public DbSet<EventStore> EventStore { get; set; }
     }
 }

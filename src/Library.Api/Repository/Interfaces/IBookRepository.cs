@@ -1,13 +1,12 @@
-using Library.Core;
-using Library.Dto;
+using Library.Database.Entities;
 
-namespace Library.Service.Interfaces
+namespace Library.Repository.Interfaces
 {
-    public interface IBookService
+    public interface IBookRepository
     {
         Task<Book> CreateBookAsync(Book book);
 
-        Task<Result<Book>> ReadBooksAsync(
+        Task<(IEnumerable<Book>, int)> ReadBooksAsync(
             string? searchTerm,
             string? orderBy,
             string? orderDirection = "ASC",
@@ -17,6 +16,6 @@ namespace Library.Service.Interfaces
 
         Task<Book> ReadBookByIdAsync(Guid id);
 
-        Task<Book> UpdateBookAsync(Guid id, Book book);
+        Book UpdateBookAsync(Guid id, Book book);
     }
 }

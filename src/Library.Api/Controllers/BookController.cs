@@ -24,28 +24,37 @@ namespace Library.Controllers
                 throw new BadHttpRequestException("Body is null");
             }
 
-            return await _bookService.CreateBook(book);
+            return await _bookService.CreateBookAsync(book);
         }
 
         [HttpGet]
         public async Task<Result<Book>> ReadBooks(
+            [FromQuery] string? searchTerm,
+            [FromQuery] string? orderBy,
+            [FromQuery] string? orderDirection = "ASC",
             [FromQuery] int skip = 0,
             [FromQuery] int take = 0
         )
         {
-            return await _bookService.ReadBooks(skip, take);
+            return await _bookService.ReadBooksAsync(
+                searchTerm,
+                orderBy,
+                orderDirection,
+                skip,
+                take
+            );
         }
 
         [HttpGet("{id}")]
         public async Task<Book> ReadBookById([FromRoute] Guid id)
         {
-            return await _bookService.ReadBookById(id);
+            return await _bookService.ReadBookByIdAsync(id);
         }
 
         [HttpPut("{id}")]
         public async Task<Book> UpdateBook([FromRoute] Guid id, [FromBody] Book book)
         {
-            return await _bookService.UpdateBook(id, book);
+            return await _bookService.UpdateBookAsync(id, book);
         }
     }
 }

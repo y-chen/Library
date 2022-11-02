@@ -18,23 +18,13 @@
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-  </div>
 
-  <div
-    *ngFor="let author of form.getFormArray('authors').controls; let index = index"
-    class="author-row"
-  >
+
     <mat-form-field appearance="fill">
       <mat-label>Author</mat-label>
-      <input matInput [formControl]="author.toFormControl()" />
+      <input matInput formControlName="author" />
     </mat-form-field>
-
-    <button mat-mini-fab (click)="deleteAuthor(index)">
-      <mat-icon>delete</mat-icon>
-    </button>
   </div>
-
-  <button type="button" mat-raised-button color="accent" (click)="addAuthor()">Add Author</button>
 </form>
 
 <button

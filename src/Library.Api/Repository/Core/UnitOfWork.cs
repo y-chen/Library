@@ -9,12 +9,14 @@ namespace Library.Repository.Core
     {
         private readonly LibraryContext context;
 
+        public IBookRepository Book { get; private set; }
         public IEventStoreRepository EventStore { get; private set; }
 
         public UnitOfWork(LibraryContext context)
         {
             this.context = context;
 
+            this.Book = new BookRepository(context);
             this.EventStore = new EventStoreRepository(context);
         }
 

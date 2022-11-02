@@ -14,6 +14,6 @@ namespace Library.Repository.Interfaces
             int take = 0
         );
 
-        Task<EventStore> ReadEvent(Guid streamId, string streamName);
+        Task<EventStore> ReadLatestEvent(Guid streamId, string streamName);
     }
 }

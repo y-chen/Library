@@ -1,3 +1,5 @@
+using System.Dynamic;
+
 namespace Library.Dto
 {
     public class Book : DtoBase
@@ -8,6 +10,6 @@ namespace Library.Dto
 
         public DateTime PublishDate { get; set; }
 
-        public string[] Authors { get; set; }
+        public string Author { get; set; }
     }
 }

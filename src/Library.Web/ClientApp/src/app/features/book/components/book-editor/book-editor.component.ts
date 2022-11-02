@@ -28,40 +28,25 @@ export class BookEditorComponent implements OnInit {
     this.form = this.createForm(this.book);
   }
 
-  addAuthor(): void {
-    this.form
-      .getFormArray('authors')
-      .push(this.formBuilder.control(null, { validators: [Validators.required] }));
-  }
-
-  deleteAuthor(index: number): void {
-    this.form.getFormArray('authors').removeAt(index);
-  }
-
   async submit(): Promise<void> {
     const values = this.form.value;
 
     isUUID(values.id)
       ? await this.bookService.updateBook(values.id, values)
-      : await this.bookService.createBook(values);
+      : await this.bookService.createBook({ ...values, id: undefined });
 
     this.router.navigate(['/app', 'books']);
   }
 
   private createForm(book?: Book): FormGroup {
-    const { id, title, description, publishDate, authors } = book ?? {};
-
-    const authorsFormGroups =
-      authors?.map((author) =>
-        this.formBuilder.control(author, { validators: [Validators.required] }),
-      ) ?? [];
+    const { id, title, description, publishDate, author } = book ?? {};
 
     return this.formBuilder.group({
       id: [id ?? undefined, []],
       title: [title, [Validators.required]],
       description: [description, [Validators.required]],
       publishDate: [publishDate, [Validators.required]],
-      authors: this.formBuilder.array(authorsFormGroups),
+      author: [author, [Validators.required]],
     });
   }
 }

@@ -56,9 +56,12 @@ namespace Library.Service
             );
         }
 
-        public async Task<EventStoreDto> ReadEvent(Guid streamId, string streamName)
+        public async Task<EventStoreDto> ReadLatestEvent(Guid streamId, string streamName)
         {
-            EventStoreEntity entity = await _unitOfWork.EventStore.ReadEvent(streamId, streamName);
+            EventStoreEntity entity = await _unitOfWork.EventStore.ReadLatestEvent(
+                streamId,
+                streamName
+            );
 
             return _mapper.Map<EventStoreDto>(entity);
         }

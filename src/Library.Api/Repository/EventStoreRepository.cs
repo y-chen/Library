@@ -56,7 +56,7 @@ namespace Library.Repository
             return (items, count);
         }
 
-        public async Task<EventStore> ReadEvent(Guid streamId, string streamName)
+        public async Task<EventStore> ReadLatestEvent(Guid streamId, string streamName)
         {
             return await GetQuery()
                 .Where(x => x.StreamId == streamId)
