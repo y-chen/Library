@@ -1,7 +1,7 @@
 export interface ParamBase {
   searchTerm?: string;
   orderBy?: string;
-  orderDirection?: 'ASC' | 'DESC';
+  orderDirection?: string;
   skip?: number;
   take?: number;
 }
