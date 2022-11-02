@@ -10,7 +10,8 @@ namespace Library.Service.Interfaces
         Task<Result<EventStore>> ReadEvents(
             Guid? streamId,
             string? streamName,
-            bool latest = false,
+            string? orderBy = "revision",
+            string? orderDirection = "ASC",
             int skip = 0,
             int take = 0
         );
