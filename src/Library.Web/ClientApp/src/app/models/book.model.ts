@@ -5,7 +5,7 @@ export interface Book {
   title: string;
   description: string;
   publishDate: Date;
-  authors: string[];
+  author: string;
 }
 
 export type BookParam = ParamBase;

@@ -10,6 +10,6 @@ namespace Library.Dto
 
         public DateTime PublishDate { get; set; }
 
-        public ExpandoObject Authors { get; set; }
+        public string Author { get; set; }
     }
 }

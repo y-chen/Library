@@ -16,7 +16,7 @@ export class BookListComponent implements OnInit {
   pageSize: number = 5;
   pageSizeOptions: number[] = [5, 10, 25, 100];
   result!: Result<Book>;
-  displayedColumns: string[] = ['title', 'description', 'publishDate', 'authors', 'actions'];
+  displayedColumns: string[] = ['title', 'description', 'publishDate', 'author', 'actions'];
 
   constructor(private readonly bookService: BookService, private readonly route: ActivatedRoute) {}
 

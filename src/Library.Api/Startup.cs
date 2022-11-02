@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Dtos = Library.Dto;
 using Entities = Library.Database.Entities;
 using Library.Repository.Interfaces;
+using System.Text.Json;
+using System.Dynamic;
 
 namespace Library.Startup
 {

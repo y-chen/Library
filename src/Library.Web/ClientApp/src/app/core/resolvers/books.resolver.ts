@@ -10,6 +10,6 @@ export class BooksResolver implements Resolve<Result<Book>> {
   constructor(private readonly bookService: BookService) {}
 
   resolve(): Promise<Result<Book>> {
-    return this.bookService.readBooks({ skip: 0, take: 5 });
+    return this.bookService.readBooks();
   }
 }

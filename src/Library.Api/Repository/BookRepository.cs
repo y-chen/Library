@@ -52,6 +52,12 @@ namespace Library.Repository
                                 ? query.OrderBy(book => book.PublishDate)
                                 : query.OrderByDescending(book => book.PublishDate);
                         break;
+                    case "author":
+                        query =
+                            orderDirection == "ASC"
+                                ? query.OrderBy(book => book.Author)
+                                : query.OrderByDescending(book => book.Author);
+                        break;
 
                     default:
                         throw new InvalidOperationException("Invalid sorting operation");

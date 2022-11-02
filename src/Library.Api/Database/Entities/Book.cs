@@ -18,15 +18,14 @@ namespace Library.Database.Entities
         public DateTime PublishDate { get; set; }
 
         [Required]
-        [Column(TypeName = "JSON")]
-        public ExpandoObject Authors { get; set; }
+        public string Author { get; set; }
 
-        public Book(string title, string description, DateTime publishDate, ExpandoObject authors)
+        public Book(string title, string description, DateTime publishDate, string author)
         {
             Title = title;
             Description = description;
             PublishDate = publishDate;
-            Authors = authors;
+            Author = author;
         }
     }
 }

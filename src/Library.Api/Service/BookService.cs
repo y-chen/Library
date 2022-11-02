@@ -86,7 +86,11 @@ namespace Library.Service
                 throw new KeyNotFoundException($"Book with Id {id.ToString()} not found");
             }
 
-            bookEntity = _mapper.Map<BookEntity>(book);
+            bookEntity.Title = book.Title;
+            bookEntity.Description = book.Description;
+            bookEntity.PublishDate = book.PublishDate;
+            bookEntity.Author = book.Author;
+
             BookEntity updatedBook = _unitOfWork.Book.UpdateBookAsync(id, bookEntity);
             EventStoreEntity latestEvent = await _unitOfWork.EventStore.ReadLatestEvent(
                 bookEntity.Id,
@@ -95,9 +99,11 @@ namespace Library.Service
             EventStoreEntity newEvent = new EventStoreEntity(
                 streamId: latestEvent.StreamId,
                 streamName: latestEvent.StreamName,
-                "Update",
-                JsonSerializer.Deserialize<ExpandoObject>(JsonSerializer.Serialize(bookEntity)),
-                ++latestEvent.Revision
+                eventType: "Update",
+                data: JsonSerializer.Deserialize<ExpandoObject>(
+                    JsonSerializer.Serialize(bookEntity)
+                ),
+                revision: latestEvent.Revision + 1
             );
             await _unitOfWork.EventStore.CreateEvent(newEvent);
             await _unitOfWork.CompleteAsync();
@@ -127,12 +133,9 @@ namespace Library.Service
                 throw new ArgumentNullException("Publish date is missing");
             }
 
-            if (
-                JsonSerializer.Deserialize<string[]>(JsonSerializer.Serialize(book.Authors)).Length
-                < 1
-            )
+            if (book.Author == null)
             {
-                throw new ArgumentNullException("At least one author is required");
+                throw new ArgumentNullException("Author is missing");
             }
         }
     }
