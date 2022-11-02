@@ -25,9 +25,6 @@ export class BookListComponent implements OnInit {
   }
 
   async onPageChange({ previousPageIndex, pageIndex, pageSize: take }: PageEvent) {
-    pageIndex > (previousPageIndex ?? 0)
-      ? ((previousPageIndex ?? 0) + 1) * take
-      : (pageIndex + 1) * take;
     const skip =
       take > this.result.count
         ? 0

@@ -1,0 +1,13 @@
+@import 'mixins';
+
+:host {
+  @include flex-box(column, start, center, start);
+
+  form.form-container {
+    @include flex-box(column, start, start, start);
+
+    div.author-row {
+      @include flex-box(row, start, center, center, 5px);
+    }
+  }
+}

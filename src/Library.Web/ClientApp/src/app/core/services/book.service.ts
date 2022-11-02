@@ -12,9 +12,21 @@ export class BookService {
     this.prefix = 'books';
   }
 
+  createBook(book: Book): Promise<Book> {
+    return this.api.post(this.prefix, book);
+  }
+
   readBooks(params?: BookParam): Promise<Result<Book>> {
     const convertedParams = this.api.convertParams(params);
 
     return this.api.get(this.prefix, { params: convertedParams });
+  }
+
+  readBookById(id: string): Promise<Book> {
+    return this.api.get(`${this.prefix}/${id}`);
+  }
+
+  updateBook(id: string, book: Book): Promise<Book> {
+    return this.api.put(`${this.prefix}/${id}`, book);
   }
 }
