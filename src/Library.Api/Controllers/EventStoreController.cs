@@ -1,3 +1,4 @@
+using Library.Core;
 using Library.Dto;
 using Library.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace Library.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<EventStore>> ReadEvent(
+        public async Task<Result<EventStore>> ReadEvent(
             [FromQuery] Guid? streamId,
             [FromQuery] string? streamName
         )

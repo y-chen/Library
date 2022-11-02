@@ -1,3 +1,4 @@
+using Library.Core;
 using Library.Dto;
 
 namespace Library.Service.Interfaces
@@ -6,10 +7,12 @@ namespace Library.Service.Interfaces
     {
         Task<EventStore> CreateEvent(EventStore eventStore);
 
-        Task<IEnumerable<EventStore>> ReadEvents(
+        Task<Result<EventStore>> ReadEvents(
             Guid? streamId,
             string? streamName,
-            bool latest = false
+            bool latest = false,
+            int skip = 0,
+            int take = 0
         );
 
         Task<EventStore> ReadEvent(Guid streamId, string streamName);

@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
 import { FullScreenSpinnerComponent } from './components/full-screen-spinner/full-screen-spinner.component';
@@ -23,7 +25,14 @@ import { MaterialModule } from './material/material.module';
     ValidationErrorsComponent,
   ],
   providers: [],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, MaterialModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    RouterModule,
+    MaterialModule,
+  ],
   exports: [
     CommonModule,
     FormsModule,

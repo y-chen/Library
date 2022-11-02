@@ -17,10 +17,12 @@ namespace Library.Repository
             return eventStore;
         }
 
-        public async Task<IEnumerable<EventStore>> ReadEvents(
+        public async Task<(IEnumerable<EventStore>, int)> ReadEvents(
             Guid? streamId,
             string? streamName,
-            bool latest = false
+            bool latest = false,
+            int skip = 0,
+            int take = 0
         )
         {
             IQueryable<EventStore> query = GetQuery();
@@ -35,7 +37,23 @@ namespace Library.Repository
                     .Select(x => x.OrderByDescending(e => e.Revision).FirstOrDefault());
             }
 
-            return await query.ToListAsync();
+            // Getting an error when calling Count()
+            int count = query.ToList().Count;
+            query = query.OrderBy(x => streamId);
+
+            if (skip > 0)
+            {
+                query = query.Skip(skip);
+            }
+
+            if (take > 0)
+            {
+                query = query.Take(take);
+            }
+
+            IEnumerable<EventStore> items = await query.ToListAsync();
+
+            return (items, count);
         }
 
         public async Task<EventStore> ReadEvent(Guid streamId, string streamName)

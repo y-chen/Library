@@ -1,5 +1,4 @@
 {
-    "production": false,
-    "apiBaseUrl": "http://localhost:5289/api"
+  "production": false,
+  "apiBaseUrl": "/api"
 }
-  

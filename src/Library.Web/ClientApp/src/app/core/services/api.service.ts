@@ -11,7 +11,10 @@ import { Header, HttpOption, HttpOptions, Param } from '../../models/http.model'
 export class ApiService {
   private readonly apiRoot: string;
 
-  constructor(@Inject(APP_CONFIG) private readonly config: Config, private readonly http: HttpClient) {
+  constructor(
+    @Inject(APP_CONFIG) private readonly config: Config,
+    private readonly http: HttpClient,
+  ) {
     this.apiRoot = this.config.apiBaseUrl;
   }
 
@@ -95,10 +98,14 @@ export class ApiService {
     let headers = new HttpHeaders();
     customHeaders = customHeaders || [];
     headers = customHeaders.reduce(
-      (accumulator: HttpOption, currentValue: Header) => (headers = this.handleOption(accumulator, currentValue) as HttpHeaders),
+      (accumulator: HttpOption, currentValue: Header) =>
+        (headers = this.handleOption(accumulator, currentValue) as HttpHeaders),
       headers,
     );
-    headers = headers.set('Cache-Control', 'no-cache').set('Pragma', 'no-cache').set('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
+    headers = headers
+      .set('Cache-Control', 'no-cache')
+      .set('Pragma', 'no-cache')
+      .set('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
 
     const hasContentType = headers.has('Content-Type');
 
@@ -112,7 +119,8 @@ export class ApiService {
   private getParams(customParams: Param[] = []): HttpParams {
     let params = new HttpParams();
     params = customParams.reduce(
-      (accumulator: HttpOption, currentValue: Header) => (accumulator = this.handleOption(accumulator, currentValue) as HttpParams),
+      (accumulator: HttpOption, currentValue: Header) =>
+        (accumulator = this.handleOption(accumulator, currentValue) as HttpParams),
       params,
     );
 

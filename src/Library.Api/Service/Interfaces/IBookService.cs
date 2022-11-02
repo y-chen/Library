@@ -1,3 +1,4 @@
+using Library.Core;
 using Library.Dto;
 
 namespace Library.Service.Interfaces
@@ -6,7 +7,7 @@ namespace Library.Service.Interfaces
     {
         Task<Book> CreateBook(Book book);
 
-        Task<IEnumerable<Book>> ReadBooks();
+        Task<Result<Book>> ReadBooks(int skip, int take);
 
         Task<Book> ReadBookById(Guid id);
 
