@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { BookModule } from './features/book/book.module';
 import { HomeModule } from './features/home/home.module';
+import { InterceptorsModule } from './interceptors/interceptors.module';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { SharedModule } from './shared/shared.module';
     BrowserModule,
     CoreModule,
     HomeModule,
+    InterceptorsModule,
     SharedModule,
   ],
   providers: [],
