@@ -5,11 +5,27 @@
     <mat-form-field appearance="fill">
       <mat-label>Title</mat-label>
       <input matInput formControlName="title" />
+
+      <mat-error>
+        <lib-validation-errors
+          [control]="form.getFormControl('title')"
+          [errors]="validationErrors.title"
+        >
+        </lib-validation-errors>
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Description</mat-label>
       <input matInput formControlName="description" />
+
+      <mat-error>
+        <lib-validation-errors
+          [control]="form.getFormControl('description')"
+          [errors]="validationErrors.description"
+        >
+        </lib-validation-errors>
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -17,12 +33,27 @@
       <input matInput [matDatepicker]="picker" formControlName="publishDate" />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
 
+      <mat-error>
+        <lib-validation-errors
+          [control]="form.getFormControl('publishDate')"
+          [errors]="validationErrors.publishDate"
+        >
+        </lib-validation-errors>
+      </mat-error>
+    </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Author</mat-label>
       <input matInput formControlName="author" />
+
+      <mat-error>
+        <lib-validation-errors
+          [control]="form.getFormControl('author')"
+          [errors]="validationErrors.author"
+        >
+        </lib-validation-errors>
+      </mat-error>
     </mat-form-field>
   </div>
 </form>
