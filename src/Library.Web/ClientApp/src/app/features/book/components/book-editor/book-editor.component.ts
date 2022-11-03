@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BookService } from '../../../../core/services/book.service';
 import { Book } from '../../../../models/book.model';
+import { ValidationErrors } from '../../../../models/validation-errors.model';
 
 @Component({
   selector: 'lib-book-editor',
@@ -15,6 +16,13 @@ import { Book } from '../../../../models/book.model';
 export class BookEditorComponent implements OnInit {
   book?: Book;
   form!: FormGroup;
+
+  protected readonly validationErrors: ValidationErrors = {
+    title: [{ type: 'required', message: 'Title is required.' }],
+    description: [{ type: 'required', message: 'Description is required.' }],
+    publishDate: [{ type: 'required', message: 'Publish is required.' }],
+    author: [{ type: 'required', message: 'Author is required.' }],
+  };
 
   constructor(
     private readonly bookService: BookService,
